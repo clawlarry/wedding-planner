@@ -33,23 +33,23 @@ export default function VenueDetailClient({ id }: { id: string }) {
   if (!venue) return <div>Loading...</div>;
 
   return (
-    <div className="space-y-6">
-      <Link href="/venues" className="flex items-center gap-2 text-rose-600 hover:underline">
+    <div className="space-y-4 md:space-y-6">
+      <Link href="/venues" className="flex items-center gap-2 text-rose-600 hover:underline text-sm md:text-base">
         <ArrowLeft className="w-4 h-4" />
         Back to Venues
       </Link>
 
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-3xl font-bold">{venue.name}</h2>
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl md:text-3xl font-bold truncate">{venue.name}</h2>
           {venue.address && (
-            <p className="text-gray-600 flex items-center gap-2 mt-2">
-              <MapPin className="w-5 h-5" />
-              {venue.address}
+            <p className="text-gray-600 flex items-center gap-2 mt-2 text-sm md:text-base">
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+              <span className="truncate">{venue.address}</span>
             </p>
           )}
         </div>
-        <span className={`px-4 py-2 rounded-full ${
+        <span className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm self-start ${
           venue.status === 'booked' ? 'bg-green-100 text-green-700' :
           venue.status === 'rejected' ? 'bg-red-100 text-red-700' :
           venue.status === 'visited' ? 'bg-blue-100 text-blue-700' :
@@ -60,12 +60,12 @@ export default function VenueDetailClient({ id }: { id: string }) {
       </div>
 
       {venue.viewing_date && (
-        <div className="bg-rose-50 rounded-lg p-6 border border-rose-200">
-          <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+        <div className="bg-rose-50 rounded-lg p-4 md:p-6 border border-rose-200">
+          <h3 className="text-base md:text-lg font-semibold mb-2 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-rose-600" />
             Scheduled Viewing
           </h3>
-          <p className="text-lg">
+          <p className="text-base md:text-lg">
             {new Date(venue.viewing_date).toLocaleDateString("en-US", {
               weekday: "long",
               month: "long",
@@ -77,8 +77,8 @@ export default function VenueDetailClient({ id }: { id: string }) {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4">Notes</h3>
+      <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+        <h3 className="text-base md:text-lg font-semibold mb-4">Notes</h3>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -88,11 +88,11 @@ export default function VenueDetailClient({ id }: { id: string }) {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-3 py-2 md:px-4"
               placeholder="Add your thoughts about this venue..."
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Pros ✅
@@ -101,7 +101,7 @@ export default function VenueDetailClient({ id }: { id: string }) {
                 value={pros}
                 onChange={(e) => setPros(e.target.value)}
                 rows={3}
-                className="w-full border rounded-lg px-4 py-2"
+                className="w-full border rounded-lg px-3 py-2 md:px-4"
                 placeholder="What do you love about this venue?"
               />
             </div>
@@ -113,14 +113,14 @@ export default function VenueDetailClient({ id }: { id: string }) {
                 value={cons}
                 onChange={(e) => setCons(e.target.value)}
                 rows={3}
-                className="w-full border rounded-lg px-4 py-2"
+                className="w-full border rounded-lg px-3 py-2 md:px-4"
                 placeholder="Any concerns or drawbacks?"
               />
             </div>
           </div>
           <button
             onClick={saveNotes}
-            className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700"
+            className="bg-rose-600 text-white px-6 py-2 rounded-lg hover:bg-rose-700 w-full sm:w-auto"
           >
             Save Notes
           </button>

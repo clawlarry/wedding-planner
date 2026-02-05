@@ -46,39 +46,39 @@ export default function BudgetPage() {
   const totalPaid = expenses.filter((e) => e.paid).reduce((sum, e) => sum + (e.actual_cost || 0), 0);
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-bold">Wedding Budget</h2>
+    <div className="space-y-6 md:space-y-8">
+      <h2 className="text-2xl md:text-3xl font-bold">Wedding Budget</h2>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-blue-50 p-6 rounded-lg shadow-md">
-          <p className="text-3xl font-bold text-blue-700">${totalEstimated.toLocaleString()}</p>
-          <p className="text-sm text-blue-600">Estimated Total</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+        <div className="bg-blue-50 p-4 md:p-6 rounded-lg shadow-md">
+          <p className="text-xl md:text-3xl font-bold text-blue-700">${totalEstimated.toLocaleString()}</p>
+          <p className="text-xs md:text-sm text-blue-600">Estimated Total</p>
         </div>
-        <div className="bg-rose-50 p-6 rounded-lg shadow-md">
-          <p className="text-3xl font-bold text-rose-700">${totalActual.toLocaleString()}</p>
-          <p className="text-sm text-rose-600">Actual Total</p>
+        <div className="bg-rose-50 p-4 md:p-6 rounded-lg shadow-md">
+          <p className="text-xl md:text-3xl font-bold text-rose-700">${totalActual.toLocaleString()}</p>
+          <p className="text-xs md:text-sm text-rose-600">Actual Total</p>
         </div>
-        <div className="bg-green-50 p-6 rounded-lg shadow-md">
-          <p className="text-3xl font-bold text-green-700">${totalPaid.toLocaleString()}</p>
-          <p className="text-sm text-green-600">Paid So Far</p>
+        <div className="bg-green-50 p-4 md:p-6 rounded-lg shadow-md">
+          <p className="text-xl md:text-3xl font-bold text-green-700">${totalPaid.toLocaleString()}</p>
+          <p className="text-xs md:text-sm text-green-600">Paid So Far</p>
         </div>
       </div>
 
-      <form onSubmit={addExpense} className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold mb-4">Add Expense</h3>
-        <div className="grid grid-cols-6 gap-4">
+      <form onSubmit={addExpense} className="bg-white rounded-lg shadow-md p-4 md:p-6">
+        <h3 className="text-base md:text-lg font-semibold mb-4">Add Expense</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 md:gap-4">
           <input
             type="text"
             placeholder="Item/Service"
             required
             value={newExpense.item}
             onChange={(e) => setNewExpense({ ...newExpense, item: e.target.value })}
-            className="border rounded-lg px-4 py-2"
+            className="border rounded-lg px-3 py-2 md:px-4"
           />
           <select
             value={newExpense.category}
             onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-            className="border rounded-lg px-4 py-2"
+            className="border rounded-lg px-3 py-2 md:px-4"
           >
             <option value="">Category</option>
             <option value="Venue">Venue</option>
@@ -91,71 +91,73 @@ export default function BudgetPage() {
             placeholder="Estimated $"
             value={newExpense.estimated_cost}
             onChange={(e) => setNewExpense({ ...newExpense, estimated_cost: e.target.value })}
-            className="border rounded-lg px-4 py-2"
+            className="border rounded-lg px-3 py-2 md:px-4"
           />
           <input
             type="number"
             placeholder="Actual $"
             value={newExpense.actual_cost}
             onChange={(e) => setNewExpense({ ...newExpense, actual_cost: e.target.value })}
-            className="border rounded-lg px-4 py-2"
+            className="border rounded-lg px-3 py-2 md:px-4"
           />
           <input
             type="text"
             placeholder="Vendor"
             value={newExpense.vendor}
             onChange={(e) => setNewExpense({ ...newExpense, vendor: e.target.value })}
-            className="border rounded-lg px-4 py-2"
+            className="border rounded-lg px-3 py-2 md:px-4"
           />
           <button
             type="submit"
-            className="bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700"
+            className="bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 w-full sm:w-auto"
           >
             Add
           </button>
         </div>
       </form>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-semibold mb-4">All Expenses</h3>
+      <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+        <h3 className="text-lg md:text-xl font-semibold mb-4">All Expenses</h3>
         {expenses.length === 0 ? (
           <p className="text-gray-500">No expenses added yet.</p>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-3">Item</th>
-                <th className="text-left py-3">Category</th>
-                <th className="text-right py-3">Estimated</th>
-                <th className="text-right py-3">Actual</th>
-                <th className="text-center py-3">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((expense) => (
-                <tr key={expense.id} className="border-b hover:bg-gray-50">
-                  <td className="py-3">{expense.item}</td>
-                  <td className="py-3">{expense.category}</td>
-                  <td className="py-3 text-right">
-                    {expense.estimated_cost ? `$${expense.estimated_cost.toLocaleString()}` : "-"}
-                  </td>
-                  <td className="py-3 text-right font-semibold">
-                    {expense.actual_cost ? `$${expense.actual_cost.toLocaleString()}` : "-"}
-                  </td>
-                  <td className="py-3 text-center">
-                    <button
-                      onClick={() => togglePaid(expense.id)}
-                      className={`px-3 py-1 rounded text-sm ${
-                        expense.paid ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                      }`}
-                    >
-                      {expense.paid ? 'Paid' : 'Unpaid'}
-                    </button>
-                  </td>
+          <div className="overflow-x-auto -mx-4 md:mx-0">
+            <table className="w-full min-w-[500px] md:min-w-0">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-3 px-4 md:px-0 text-sm md:text-base">Item</th>
+                  <th className="text-left py-3 px-4 md:px-0 text-sm md:text-base">Category</th>
+                  <th className="text-right py-3 px-4 md:px-0 text-sm md:text-base">Est.</th>
+                  <th className="text-right py-3 px-4 md:px-0 text-sm md:text-base">Actual</th>
+                  <th className="text-center py-3 px-4 md:px-0 text-sm md:text-base">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {expenses.map((expense) => (
+                  <tr key={expense.id} className="border-b hover:bg-gray-50">
+                    <td className="py-3 px-4 md:px-0 text-sm md:text-base">{expense.item}</td>
+                    <td className="py-3 px-4 md:px-0 text-sm md:text-base">{expense.category}</td>
+                    <td className="py-3 text-right px-4 md:px-0 text-sm md:text-base">
+                      {expense.estimated_cost ? `$${expense.estimated_cost.toLocaleString()}` : "-"}
+                    </td>
+                    <td className="py-3 text-right font-semibold px-4 md:px-0 text-sm md:text-base">
+                      {expense.actual_cost ? `$${expense.actual_cost.toLocaleString()}` : "-"}
+                    </td>
+                    <td className="py-3 text-center px-4 md:px-0">
+                      <button
+                        onClick={() => togglePaid(expense.id)}
+                        className={`px-2 md:px-3 py-1 rounded text-xs md:text-sm ${
+                          expense.paid ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                        }`}
+                      >
+                        {expense.paid ? 'Paid' : 'Unpaid'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

@@ -33,9 +33,9 @@ export default function NewVenuePage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6">Add New Venue</h2>
+      <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Add New Venue</h2>
       
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-lg shadow-md p-6">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 bg-white rounded-lg shadow-md p-4 md:p-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Venue Name *
@@ -45,7 +45,7 @@ export default function NewVenuePage() {
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-3 py-2 md:px-4"
             placeholder="e.g., Franciscan Gardens"
           />
         </div>
@@ -58,12 +58,12 @@ export default function NewVenuePage() {
             type="text"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-3 py-2 md:px-4"
             placeholder="Full address"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Phone
@@ -72,7 +72,7 @@ export default function NewVenuePage() {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-3 py-2 md:px-4"
               placeholder="(555) 123-4567"
             />
           </div>
@@ -84,15 +84,15 @@ export default function NewVenuePage() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border rounded-lg px-3 py-2 md:px-4"
               placeholder="venue@example.com"
             />
           </div>
         </div>
 
-        <div className="border-t pt-6">
-          <h3 className="text-lg font-semibold mb-4">Viewing Schedule</h3>
-          <div className="grid grid-cols-2 gap-4">
+        <div className="border-t pt-4 md:pt-6">
+          <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4">Viewing Schedule</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Date
@@ -101,7 +101,7 @@ export default function NewVenuePage() {
                 type="date"
                 value={formData.viewing_date}
                 onChange={(e) => setFormData({ ...formData, viewing_date: e.target.value })}
-                className="w-full border rounded-lg px-4 py-2"
+                className="w-full border rounded-lg px-3 py-2 md:px-4"
               />
             </div>
             <div>
@@ -112,13 +112,13 @@ export default function NewVenuePage() {
                 type="time"
                 value={formData.viewing_time}
                 onChange={(e) => setFormData({ ...formData, viewing_time: e.target.value })}
-                className="w-full border rounded-lg px-4 py-2"
+                className="w-full border rounded-lg px-3 py-2 md:px-4"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button
             type="submit"
             className="flex-1 bg-rose-600 text-white py-3 rounded-lg hover:bg-rose-700 font-semibold"

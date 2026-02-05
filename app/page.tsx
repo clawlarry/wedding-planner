@@ -25,54 +25,54 @@ export default function Dashboard() {
     .slice(0, 5);
 
   return (
-    <div className="space-y-8">
-      <div className="text-center py-8">
-        <h2 className="text-3xl font-bold text-gray-800">Our Wedding Planning</h2>
-        <p className="text-gray-600 mt-2">Let&apos;s plan the perfect day together 💕</p>
+    <div className="space-y-6 md:space-y-8">
+      <div className="text-center py-4 md:py-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Our Wedding Planning</h2>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">Let&apos;s plan the perfect day together 💕</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-rose-500">
-          <div className="flex items-center gap-3">
-            <MapPin className="w-8 h-8 text-rose-500" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border-l-4 border-rose-500">
+          <div className="flex items-center gap-2 md:gap-3">
+            <MapPin className="w-6 h-6 md:w-8 md:h-8 text-rose-500 flex-shrink-0" />
             <div>
-              <p className="text-2xl font-bold">{venues.length}</p>
-              <p className="text-sm text-gray-600">Venues</p>
+              <p className="text-xl md:text-2xl font-bold">{venues.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Venues</p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-8 h-8 text-blue-500" />
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+          <div className="flex items-center gap-2 md:gap-3">
+            <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-blue-500 flex-shrink-0" />
             <div>
-              <p className="text-2xl font-bold">{pendingTasks.length}</p>
-              <p className="text-sm text-gray-600">Tasks To Do</p>
+              <p className="text-xl md:text-2xl font-bold">{pendingTasks.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Tasks To Do</p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
-          <div className="flex items-center gap-3">
-            <Users className="w-8 h-8 text-green-500" />
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border-l-4 border-green-500">
+          <div className="flex items-center gap-2 md:gap-3">
+            <Users className="w-6 h-6 md:w-8 md:h-8 text-green-500 flex-shrink-0" />
             <div>
-              <p className="text-2xl font-bold">{confirmedGuests.length}/{guests.length}</p>
-              <p className="text-sm text-gray-600">Guests Confirmed</p>
+              <p className="text-xl md:text-2xl font-bold">{confirmedGuests.length}/{guests.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Guests Confirmed</p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
-          <div className="flex items-center gap-3">
-            <Calendar className="w-8 h-8 text-purple-500" />
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md border-l-4 border-purple-500">
+          <div className="flex items-center gap-2 md:gap-3">
+            <Calendar className="w-6 h-6 md:w-8 md:h-8 text-purple-500 flex-shrink-0" />
             <div>
-              <p className="text-2xl font-bold">{upcomingVenues.length}</p>
-              <p className="text-sm text-gray-600">Upcoming Viewings</p>
+              <p className="text-xl md:text-2xl font-bold">{upcomingVenues.length}</p>
+              <p className="text-xs md:text-sm text-gray-600">Upcoming Viewings</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+          <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-rose-500" />
             Upcoming Venue Viewings
           </h3>
@@ -100,8 +100,8 @@ export default function Dashboard() {
           </a>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+        <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+          <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-500" />
             Tasks To Complete
           </h3>
