@@ -45,7 +45,7 @@ export default function NewVenuePage() {
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 md:px-4"
+            className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
             placeholder="e.g., Franciscan Gardens"
           />
         </div>
@@ -58,7 +58,7 @@ export default function NewVenuePage() {
             type="text"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 md:px-4"
+            className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
             placeholder="Full address"
           />
         </div>
@@ -72,7 +72,7 @@ export default function NewVenuePage() {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 md:px-4"
+              className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
               placeholder="(555) 123-4567"
             />
           </div>
@@ -84,14 +84,14 @@ export default function NewVenuePage() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 md:px-4"
+              className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
               placeholder="venue@example.com"
             />
           </div>
         </div>
 
         <div className="border-t pt-4 md:pt-6">
-          <h3 className="text-base md:text-lg font-semibold mb-3 md:mb-4">Viewing Schedule</h3>
+          <h3 className="text-base md:text-lg font-semibold mb-4">Viewing Schedule</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -101,7 +101,7 @@ export default function NewVenuePage() {
                 type="date"
                 value={formData.viewing_date}
                 onChange={(e) => setFormData({ ...formData, viewing_date: e.target.value })}
-                className="w-full border rounded-lg px-3 py-2 md:px-4"
+                className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
               />
             </div>
             <div>
@@ -112,7 +112,7 @@ export default function NewVenuePage() {
                 type="time"
                 value={formData.viewing_time}
                 onChange={(e) => setFormData({ ...formData, viewing_time: e.target.value })}
-                className="w-full border rounded-lg px-3 py-2 md:px-4"
+                className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
               />
             </div>
           </div>
@@ -121,13 +121,13 @@ export default function NewVenuePage() {
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <button
             type="submit"
-            className="flex-1 bg-rose-600 text-white py-3 rounded-lg hover:bg-rose-700 font-semibold"
+            className="flex-1 bg-rose-600 text-white py-3 rounded-lg hover:bg-rose-700 font-semibold text-sm md:text-base"
           >
             Add Venue
           </button>
           <a
             href="/venues"
-            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 font-semibold text-center"
+            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 font-semibold text-center text-sm md:text-base"
           >
             Cancel
           </a>

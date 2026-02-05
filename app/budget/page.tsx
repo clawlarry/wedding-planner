@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DollarSign } from "lucide-react";
 
 export default function BudgetPage() {
   const [expenses, setExpenses] = useState<any[]>([]);
@@ -46,7 +45,7 @@ export default function BudgetPage() {
   const totalPaid = expenses.filter((e) => e.paid).reduce((sum, e) => sum + (e.actual_cost || 0), 0);
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6">
       <h2 className="text-2xl md:text-3xl font-bold">Wedding Budget</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
@@ -73,12 +72,12 @@ export default function BudgetPage() {
             required
             value={newExpense.item}
             onChange={(e) => setNewExpense({ ...newExpense, item: e.target.value })}
-            className="border rounded-lg px-3 py-2 md:px-4"
+            className="border rounded-lg px-3 py-2 text-sm md:text-base"
           />
           <select
             value={newExpense.category}
             onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-            className="border rounded-lg px-3 py-2 md:px-4"
+            className="border rounded-lg px-3 py-2 text-sm md:text-base"
           >
             <option value="">Category</option>
             <option value="Venue">Venue</option>
@@ -91,59 +90,59 @@ export default function BudgetPage() {
             placeholder="Estimated $"
             value={newExpense.estimated_cost}
             onChange={(e) => setNewExpense({ ...newExpense, estimated_cost: e.target.value })}
-            className="border rounded-lg px-3 py-2 md:px-4"
+            className="border rounded-lg px-3 py-2 text-sm md:text-base"
           />
           <input
             type="number"
             placeholder="Actual $"
             value={newExpense.actual_cost}
             onChange={(e) => setNewExpense({ ...newExpense, actual_cost: e.target.value })}
-            className="border rounded-lg px-3 py-2 md:px-4"
+            className="border rounded-lg px-3 py-2 text-sm md:text-base"
           />
           <input
             type="text"
             placeholder="Vendor"
             value={newExpense.vendor}
             onChange={(e) => setNewExpense({ ...newExpense, vendor: e.target.value })}
-            className="border rounded-lg px-3 py-2 md:px-4"
+            className="border rounded-lg px-3 py-2 text-sm md:text-base"
           />
           <button
             type="submit"
-            className="bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 w-full sm:w-auto"
+            className="bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 text-sm md:text-base"
           >
             Add
           </button>
         </div>
       </form>
 
-      <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+      <div className="bg-white rounded-lg shadow-md p-4 md:p-6 overflow-x-auto">
         <h3 className="text-lg md:text-xl font-semibold mb-4">All Expenses</h3>
         {expenses.length === 0 ? (
-          <p className="text-gray-500">No expenses added yet.</p>
+          <p className="text-gray-500 text-sm md:text-base">No expenses added yet.</p>
         ) : (
-          <div className="overflow-x-auto -mx-4 md:mx-0">
-            <table className="w-full min-w-[500px] md:min-w-0">
+          <div className="min-w-[600px]">
+            <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 md:px-0 text-sm md:text-base">Item</th>
-                  <th className="text-left py-3 px-4 md:px-0 text-sm md:text-base">Category</th>
-                  <th className="text-right py-3 px-4 md:px-0 text-sm md:text-base">Est.</th>
-                  <th className="text-right py-3 px-4 md:px-0 text-sm md:text-base">Actual</th>
-                  <th className="text-center py-3 px-4 md:px-0 text-sm md:text-base">Status</th>
+                  <th className="text-left py-2 md:py-3 text-sm">Item</th>
+                  <th className="text-left py-2 md:py-3 text-sm">Category</th>
+                  <th className="text-right py-2 md:py-3 text-sm">Estimated</th>
+                  <th className="text-right py-2 md:py-3 text-sm">Actual</th>
+                  <th className="text-center py-2 md:py-3 text-sm">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.map((expense) => (
                   <tr key={expense.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 md:px-0 text-sm md:text-base">{expense.item}</td>
-                    <td className="py-3 px-4 md:px-0 text-sm md:text-base">{expense.category}</td>
-                    <td className="py-3 text-right px-4 md:px-0 text-sm md:text-base">
+                    <td className="py-2 md:py-3 text-sm">{expense.item}</td>
+                    <td className="py-2 md:py-3 text-sm">{expense.category}</td>
+                    <td className="py-2 md:py-3 text-right text-sm">
                       {expense.estimated_cost ? `$${expense.estimated_cost.toLocaleString()}` : "-"}
                     </td>
-                    <td className="py-3 text-right font-semibold px-4 md:px-0 text-sm md:text-base">
+                    <td className="py-2 md:py-3 text-right font-semibold text-sm">
                       {expense.actual_cost ? `$${expense.actual_cost.toLocaleString()}` : "-"}
                     </td>
-                    <td className="py-3 text-center px-4 md:px-0">
+                    <td className="py-2 md:py-3 text-center">
                       <button
                         onClick={() => togglePaid(expense.id)}
                         className={`px-2 md:px-3 py-1 rounded text-xs md:text-sm ${
