@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Calendar, ArrowLeft } from "lucide-react";
+import { MapPin, Calendar, ArrowLeft, Heart, ThumbsUp, ThumbsDown, Save } from "lucide-react";
 import Link from "next/link";
 
 export default function VenueDetailClient({ id }: { id: string }) {
@@ -9,6 +9,7 @@ export default function VenueDetailClient({ id }: { id: string }) {
   const [notes, setNotes] = useState("");
   const [pros, setPros] = useState("");
   const [cons, setCons] = useState("");
+  const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
 
   useEffect(() => {
     const venues = JSON.parse(localStorage.getItem("venues") || "[]");
@@ -27,102 +28,179 @@ export default function VenueDetailClient({ id }: { id: string }) {
       v.id === id ? { ...v, notes, pros, cons } : v
     );
     localStorage.setItem("venues", JSON.stringify(updated));
-    alert("Notes saved!");
+    setShowSaveConfirmation(true);
+    setTimeout(() => setShowSaveConfirmation(false), 2000);
   };
 
-  if (!venue) return <div className="p-4">Loading...</div>;
+  const updateStatus = (newStatus: string) => {
+    const venues = JSON.parse(localStorage.getItem("venues") || "[]");
+    const updated = venues.map((v: any) =>
+      v.id === id ? { ...v, status: newStatus } : v
+    );
+    localStorage.setItem("venues", JSON.stringify(updated));
+    setVenue({ ...venue, status: newStatus });
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'booked': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      case 'rejected': return 'bg-red-100 text-red-700 border-red-200';
+      case 'visited': return 'bg-blue-100 text-blue-700 border-blue-200';
+      default: return 'bg-amber-100 text-amber-700 border-amber-200';
+    }
+  };
+
+  if (!venue) return (
+    <div className="flex items-center justify-center py-20">
+      <div className="w-8 h-8 border-4 border-rose-600 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      <Link href="/venues" className="flex items-center gap-2 text-rose-600 hover:underline text-sm md:text-base">
+    <div className="max-w-4xl mx-auto animate-fade-in space-y-6">
+      <Link href="/venues" className="inline-flex items-center gap-2 text-gray-500 hover:text-rose-600 transition-colors">
         <ArrowLeft className="w-4 h-4" />
-        Back to Venues
+        Back to venues
       </Link>
 
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-        <div className="flex-1 min-w-0">
-          <h2 className="text-2xl md:text-3xl font-bold break-words">{venue.name}</h2>
-          {venue.address && (
-            <p className="text-gray-600 flex items-center gap-2 mt-2 text-sm md:text-base">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-              <span className="break-words">{venue.address}</span>
-            </p>
-          )}
+      {/* Header Card */}
+      <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6 md:p-8">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 flex items-center justify-center shrink-0">
+              <Heart className="w-8 h-8 text-rose-500" />
+            </div>
+            <div>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">{venue.name}</h2>
+              {venue.address && (
+                <p className="text-gray-500 flex items-center gap-2 mt-2">
+                  <MapPin className="w-4 h-4 text-rose-500" />
+                  {venue.address}
+                </p>
+              )}
+            </div>
+          </div>
+          <span className={`px-4 py-2 rounded-full text-sm font-semibold border shrink-0 ${getStatusColor(venue.status)}`}>
+            {venue.status}
+          </span>
         </div>
-        <span className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm shrink-0 self-start ${
-          venue.status === 'booked' ? 'bg-green-100 text-green-700' :
-          venue.status === 'rejected' ? 'bg-red-100 text-red-700' :
-          venue.status === 'visited' ? 'bg-blue-100 text-blue-700' :
-          'bg-yellow-100 text-yellow-700'
-        }`}>
-          {venue.status}
-        </span>
+
+        {/* Status Actions */}
+        <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t">
+          <span className="text-sm font-medium text-gray-500 mr-2 py-2">Update status:</span>
+          {['interested', 'visited', 'booked', 'rejected'].map((status) => (
+            <button
+              key={status}
+              onClick={() => updateStatus(status)}
+              className={`px-4 py-2 rounded-xl text-sm font-medium capitalize transition-all ${
+                venue.status === status
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
       </div>
 
+      {/* Viewing Schedule */}
       {venue.viewing_date && (
-        <div className="bg-rose-50 rounded-lg p-4 md:p-6 border border-rose-200">
-          <h3 className="text-base md:text-lg font-semibold mb-2 flex items-center gap-2">
-            <Calendar className="w-4 h-4 md:w-5 md:h-5 text-rose-600" />
-            Scheduled Viewing
-          </h3>
-          <p className="text-base md:text-lg">
+        <div className="bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl p-6 md:p-8 text-white shadow-xl shadow-rose-200">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <Calendar className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-bold">Scheduled Viewing</h3>
+          </div>
+          <p className="text-2xl md:text-3xl font-bold">
             {new Date(venue.viewing_date).toLocaleDateString("en-US", {
               weekday: "long",
               month: "long",
               day: "numeric",
               year: "numeric",
             })}
-            {venue.viewing_time && ` at ${venue.viewing_time}`}
           </p>
+          {venue.viewing_time && (
+            <p className="text-rose-100 text-lg mt-2">at {venue.viewing_time}</p>
+          )}
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
-        <h3 className="text-base md:text-lg font-semibold mb-4">Notes</h3>
-        <div className="space-y-4">
+      {/* Contact Info */}
+      {(venue.phone || venue.email) && (
+        <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6">
+          <h3 className="font-serif text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {venue.phone && (
+              <div className="p-4 bg-gray-50 rounded-xl">
+                <p className="text-sm text-gray-500 mb-1">Phone</p>
+                <p className="font-medium text-gray-900">{venue.phone}</p>
+              </div>
+            )}
+            {venue.email && (
+              <div className="p-4 bg-gray-50 rounded-xl">
+                <p className="text-sm text-gray-500 mb-1">Email</p>
+                <p className="font-medium text-gray-900">{venue.email}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Notes Section */}
+      <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6 md:p-8">
+        <h3 className="font-serif text-xl font-bold text-gray-900 mb-6">Notes & Review</h3>
+        
+        <div className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               General Notes
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
-              className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all outline-none resize-none"
               placeholder="Add your thoughts about this venue..."
             />
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pros ✅
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                <ThumbsUp className="w-4 h-4 text-emerald-500" />
+                Pros
               </label>
               <textarea
                 value={pros}
                 onChange={(e) => setPros(e.target.value)}
-                rows={3}
-                className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
+                rows={4}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all outline-none resize-none"
                 placeholder="What do you love about this venue?"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cons ❌
+              <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                <ThumbsDown className="w-4 h-4 text-red-500" />
+                Cons
               </label>
               <textarea
                 value={cons}
                 onChange={(e) => setCons(e.target.value)}
-                rows={3}
-                className="w-full border rounded-lg px-3 py-2 text-sm md:text-base"
+                rows={4}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-100 transition-all outline-none resize-none"
                 placeholder="Any concerns or drawbacks?"
               />
             </div>
           </div>
+          
           <button
             onClick={saveNotes}
-            className="bg-rose-600 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-rose-700 text-sm md:text-base"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:-translate-y-0.5 transition-all"
           >
-            Save Notes
+            <Save className="w-5 h-5" />
+            {showSaveConfirmation ? 'Saved!' : 'Save Notes'}
           </button>
         </div>
       </div>

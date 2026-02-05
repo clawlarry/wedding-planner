@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle, XCircle, HelpCircle } from "lucide-react";
+import { Users, CheckCircle, XCircle, HelpCircle, Plus, Heart } from "lucide-react";
 
 export default function GuestsPage() {
   const [guests, setGuests] = useState<any[]>([]);
@@ -11,8 +11,10 @@ export default function GuestsPage() {
     side: "",
     category: "",
   });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const stored = JSON.parse(localStorage.getItem("guests") || "[]");
     setGuests(stored);
   }, []);
@@ -42,65 +44,95 @@ export default function GuestsPage() {
     localStorage.setItem("guests", JSON.stringify(updated));
   };
 
+  const deleteGuest = (id: string) => {
+    const updated = guests.filter((g) => g.id !== id);
+    setGuests(updated);
+    localStorage.setItem("guests", JSON.stringify(updated));
+  };
+
   const totalGuests = guests.length;
   const confirmed = guests.filter((g) => g.rsvp_status === "confirmed").length;
   const declined = guests.filter((g) => g.rsvp_status === "declined").length;
   const pending = guests.filter((g) => g.rsvp_status === "pending").length;
 
-  return (
-    <div className="space-y-6">
-      <h2 className="text-2xl md:text-3xl font-bold">Guest List</h2>
+  if (!mounted) return null;
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-          <p className="text-xl md:text-3xl font-bold">{totalGuests}</p>
-          <p className="text-xs md:text-sm text-gray-600">Total Invited</p>
+  return (
+    <div className="space-y-8 animate-fade-in">
+      {/* Header */}
+      <div>
+        <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">Guest List</h2>
+        <p className="text-gray-500 mt-1">Keep track of who&apos;s celebrating with you</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white rounded-2xl p-5 shadow-lg shadow-gray-200/50">
+          <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-3">
+            <Users className="w-5 h-5 text-gray-600" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{totalGuests}</p>
+          <p className="text-sm text-gray-500">Total Invited</p>
         </div>
-        <div className="bg-green-50 p-4 md:p-6 rounded-lg shadow-md">
-          <p className="text-xl md:text-3xl font-bold text-green-700">{confirmed}</p>
-          <p className="text-xs md:text-sm text-green-600">Confirmed ✅</p>
+        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-5 text-white">
+          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+            <CheckCircle className="w-5 h-5" />
+          </div>
+          <p className="text-2xl font-bold">{confirmed}</p>
+          <p className="text-sm text-emerald-100">Confirmed ✅</p>
         </div>
-        <div className="bg-red-50 p-4 md:p-6 rounded-lg shadow-md">
-          <p className="text-xl md:text-3xl font-bold text-red-700">{declined}</p>
-          <p className="text-xs md:text-sm text-red-600">Declined ❌</p>
+        <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl p-5 text-white">
+          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+            <XCircle className="w-5 h-5" />
+          </div>
+          <p className="text-2xl font-bold">{declined}</p>
+          <p className="text-sm text-red-100">Declined ❌</p>
         </div>
-        <div className="bg-yellow-50 p-4 md:p-6 rounded-lg shadow-md">
-          <p className="text-xl md:text-3xl font-bold text-yellow-700">{pending}</p>
-          <p className="text-xs md:text-sm text-yellow-600">Pending ⏳</p>
+        <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-5 text-white">
+          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-3">
+            <HelpCircle className="w-5 h-5" />
+          </div>
+          <p className="text-2xl font-bold">{pending}</p>
+          <p className="text-sm text-amber-100">Pending ⏳</p>
         </div>
       </div>
 
-      <form onSubmit={addGuest} className="bg-white rounded-lg shadow-md p-4 md:p-6">
-        <h3 className="text-base md:text-lg font-semibold mb-4">Add Guest</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
+      {/* Add Guest Form */}
+      <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6">
+        <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Plus className="w-5 h-5 text-rose-500" />
+          Add Guest
+        </h3>
+        <form onSubmit={addGuest} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Guest name"
             required
             value={newGuest.name}
             onChange={(e) => setNewGuest({ ...newGuest, name: e.target.value })}
-            className="border rounded-lg px-3 py-2 text-sm md:text-base"
+            className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all outline-none"
           />
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email (optional)"
             value={newGuest.email}
             onChange={(e) => setNewGuest({ ...newGuest, email: e.target.value })}
-            className="border rounded-lg px-3 py-2 text-sm md:text-base"
+            className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all outline-none"
           />
           <select
             value={newGuest.side}
             onChange={(e) => setNewGuest({ ...newGuest, side: e.target.value })}
-            className="border rounded-lg px-3 py-2 text-sm md:text-base"
+            className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all outline-none"
           >
             <option value="">Side</option>
             <option value="bride">Bride&apos;s Side</option>
             <option value="groom">Groom&apos;s Side</option>
+            <option value="both">Both</option>
           </select>
           <select
             value={newGuest.category}
             onChange={(e) => setNewGuest({ ...newGuest, category: e.target.value })}
-            className="border rounded-lg px-3 py-2 text-sm md:text-base"
+            className="px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:border-rose-500 focus:ring-4 focus:ring-rose-100 transition-all outline-none"
           >
             <option value="">Category</option>
             <option value="family">Family</option>
@@ -109,51 +141,67 @@ export default function GuestsPage() {
           </select>
           <button
             type="submit"
-            className="bg-rose-600 text-white py-2 rounded-lg hover:bg-rose-700 text-sm md:text-base"
+            className="px-6 py-3 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-xl font-semibold shadow-lg shadow-rose-200 hover:shadow-xl hover:shadow-rose-300 hover:-translate-y-0.5 transition-all"
           >
-            Add
+            Add Guest
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
-        <h3 className="text-lg md:text-xl font-semibold mb-4">All Guests</h3>
+      {/* Guest List */}
+      <div className="bg-white rounded-2xl shadow-lg shadow-gray-200/50 p-6">
+        <h3 className="font-serif text-xl font-bold text-gray-900 mb-6">All Guests</h3>
+        
         {guests.length === 0 ? (
-          <p className="text-gray-500 text-sm md:text-base">No guests added yet.</p>
+          <div className="text-center py-12 text-gray-400">
+            <Heart className="w-16 h-16 mx-auto mb-4 opacity-30" />
+            <p className="text-lg font-medium">No guests added yet</p>
+            <p className="text-sm">Start building your guest list above</p>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {guests.map((guest) => (
               <div
                 key={guest.id}
-                className="flex items-center justify-between p-3 md:p-4 border rounded-lg hover:bg-gray-50"
+                className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-50 transition-all group"
               >
-                <div className="flex items-center gap-2 md:gap-4 min-w-0">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={() => toggleRSVP(guest.id)}
-                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 ${
-                      guest.rsvp_status === 'confirmed' ? 'bg-green-100 text-green-600' :
-                      guest.rsvp_status === 'declined' ? 'bg-red-100 text-red-600' :
-                      'bg-yellow-100 text-yellow-600'
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                      guest.rsvp_status === 'confirmed' ? 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200' :
+                      guest.rsvp_status === 'declined' ? 'bg-red-100 text-red-600 hover:bg-red-200' :
+                      'bg-amber-100 text-amber-600 hover:bg-amber-200'
                     }`}
                   >
-                    {guest.rsvp_status === 'confirmed' ? <CheckCircle className="w-4 h-4 md:w-5 md:h-5" /> :
-                     guest.rsvp_status === 'declined' ? <XCircle className="w-4 h-4 md:w-5 md:h-5" /> :
-                     <HelpCircle className="w-4 h-4 md:w-5 md:h-5" />}
+                    {guest.rsvp_status === 'confirmed' ? <CheckCircle className="w-5 h-5" /> :
+                     guest.rsvp_status === 'declined' ? <XCircle className="w-5 h-5" /> :
+                     <HelpCircle className="w-5 h-5" />}
                   </button>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-sm md:text-base truncate">{guest.name}</p>
-                    <p className="text-xs md:text-sm text-gray-500 truncate">
-                      {guest.email} {guest.side && `• ${guest.side}'s side`} {guest.category && `• ${guest.category}`}
+                  <div>
+                    <p className="font-semibold text-gray-900">{guest.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {guest.email && <span className="mr-2">{guest.email}</span>}
+                      {guest.side && <span className="capitalize">{guest.side}&apos;s side</span>}
+                      {guest.category && <span className="capitalize">• {guest.category}</span>}
                     </p>
                   </div>
                 </div>
-                <span className={`px-2 md:px-3 py-1 rounded text-xs md:text-sm shrink-0 ${
-                  guest.rsvp_status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                  guest.rsvp_status === 'declined' ? 'bg-red-100 text-red-700' :
-                  'bg-yellow-100 text-yellow-700'
-                }`}>
-                  {guest.rsvp_status}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    guest.rsvp_status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' :
+                    guest.rsvp_status === 'declined' ? 'bg-red-100 text-red-700' :
+                    'bg-amber-100 text-amber-700'
+                  }`}>
+                    {guest.rsvp_status}
+                  </span>
+                  <button
+                    onClick={() => deleteGuest(guest.id)}
+                    className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all p-2"
+                  >
+                    <XCircle className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
